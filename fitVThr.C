@@ -15,17 +15,17 @@ using namespace std;
 
 void fitVThr(){
 
-float V_threshold [] = {1949 , 2000 , 2049 , 2100 , 2149 , 2199 , 2250 , 2300 , 2350};
-float err_V_threshold[] = {24.49 , 25 , 25.49 , 26 , 26.49 , 26.99 , 27.5 , 28 , 28.5};
-float err_eff[] = {0 , 0.013457659 , 0.027367159 , 0.038573104 , 0.031176257 , 0.018041619 , 0.013457659 , 0.014401703 , 0.010825957};
-float eff[] = {0 , 0.03626943 , 0.163934426 , 0.494047619 , 0.789473684 , 0.93 , 0.96373057 , 0.964071856 , 0.975490196};
+float V_threshold [] = {34.9 , 50.6 , 100.4 , 150.3 , 249.9 , 350.2 , 450.5};
+float err_V_threshold[] = {0.01383917 , 0.016743905 , 0.023719606 , 0.027149027 , 0.02722907 , 0.024821475 , 0.016178917};
+float err_eff[] = {0.01383917 , 0.016743905 , 0.023719606 , 0.027149027 , 0.02722907 , 0.024821475 , 0.016178917};
+float eff[] = {0.0849 , 0.1006 , 0.6004 , 0.6503 , 0.7499 , 0.8502 , 0.9505};
 
 //Grafico passa alto
 TCanvas *cG1f = new TCanvas("V_work","efficienza(V)",200,10,600,400);
 cG1f->SetLogx(1);
 cG1f->SetFillColor(0);
 cG1f->cd();
-TGraphErrors *gG1f = new TGraphErrors(9,V_threshold,eff,err_V_threshold,err_eff);
+TGraphErrors *gG1f = new TGraphErrors(7,V_threshold,eff,err_V_threshold,err_eff);
 gG1f->SetMarkerSize(0.6);
 gG1f->SetMarkerStyle(21);
 gG1f->SetTitle("efficienza(V)");
