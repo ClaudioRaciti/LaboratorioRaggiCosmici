@@ -44,9 +44,9 @@ void histograms() {
   TCanvas *cX = new TCanvas("x","x",200,10,600,400);
   cX->cd();
 
-  myHisto->GetYaxis()->SetRangeUser(0,myHisto->GetMaximum());
+  myHisto->GetYaxis()->SetRangeUser(0,myHisto->GetMaximum()+1.);
   myHisto->SetStats(kFALSE);
-  myHisto->GetXaxis()->SetTitle("x [mm]");
+  myHisto->GetXaxis()->SetTitle("bin [CHN]");
   myHisto->GetYaxis()->SetTitle("Conteggi");
 
 
@@ -57,4 +57,7 @@ void histograms() {
 
   TF1 *fitA = myHisto->GetFunction("gaus");
   fitA->SetLineColor(1);
+
+  cout << "Chi^2:" << fitA->GetChisquare() << ", number of DoF: " << fitA->GetNDF() << " (Probability: " << fitA->GetProb() << ")." << endl;
+
 }
