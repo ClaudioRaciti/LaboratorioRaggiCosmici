@@ -12,7 +12,7 @@ using namespace std;
 void D_curva_coincidenze() 
 {
 
-int n_misure=36;
+static const int n_misure=36;
 
 // ritardi in nanosecondi
 float Rit[]={0,3,6,9,12,15,18,21,24,27,28.5,30,33,37,41,49,65,-3,-6,-9,-12,-15,-18,-21,-24,-27,-30,-33,-37,-41,-49,-65,28,29.5,26,57.5};
@@ -21,14 +21,16 @@ float Rit[]={0,3,6,9,12,15,18,21,24,27,28.5,30,33,37,41,49,65,-3,-6,-9,-12,-15,-
 float t[]={100,100,100,100,100,100,150,150,150,150,200,150,200,200,200,200,200,100,100,100,100,100,100,100,100,150,150,200,200,200,200,200,200,200,200,200}; 
 float Coinc[]={1629,1573,1635,1543,1667,1764,2697,2687,2633,2345,2390,1156,1051,987,932,918,825,1562,1591,1616,1532,1567,1657,1558,1611,2317,1924,575,173,144,131,132,2754,2239,3234,867};
 
-float sRit[n_misure] , sCoinc[n_misure];
+float sRit[n_misure] ;
+float sCoinc[n_misure];
 
 for (int j=0;j<n_misure;j++){
 sRit[j]=0.5;
 sCoinc[j]=sqrt(Coinc[j]);
 }
 
-float r[n_misure] , sr[n_misure]; // rateo di conteggio e rispettiva incertezza
+float r[n_misure];
+float sr[n_misure]; // rateo di conteggio e rispettiva incertezza
 
 for (int j=0;j<n_misure;j++){
 r[j]=Coinc[j]/t[j];
