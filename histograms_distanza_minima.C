@@ -11,16 +11,20 @@
 #include "TCanvas.h"
 #include "TFile.h"
 
-void histograms_161cm() {
-  string input = "distanza_161cm.mca";
+
+
+void histograms_distanza_minima() {
+  string input = "distanza_minima.mca";
   // file di test contiene:cm
   //    > more test.txt
   // 4
   // 5
   // 6
   static const int nBins = 512;
-  static const int usedBins = 160;
-  int y[usedBins],ally[nBins];
+  static const int usedBins = 512;
+  int y[usedBins];
+  int ally[nBins];
+  Double_t par[6]={3000,300,30,3003,300,10};
   ifstream parInput(input.c_str());
   int i = 0;
 
@@ -34,7 +38,7 @@ void histograms_161cm() {
   }
 
   for (i = 0; i<usedBins; i++)
-    y[i] = ally[260+i];
+    y[i] = ally[0+i];
 
   // come si riempie un TH1
   TH1F *myHisto = new TH1F("myHisto","myHisto",usedBins,1,usedBins);
@@ -42,7 +46,7 @@ void histograms_161cm() {
     myHisto->SetBinContent(j+1,y[j]);
   }
   // come si accorpano gli eventi in bin adiacenti
-  myHisto->Rebin(10);
+  myHisto->Rebin(2);
   // ora myHisto ha nBins/4 classi e ognuna contiene gli eventi di 4 adiacenti
 
   TCanvas *cX = new TCanvas("x","x",200,10,600,400);
@@ -57,31 +61,17 @@ void histograms_161cm() {
   myHisto->SetLineColor(2);
   myHisto->SetLineWidth(2);
   myHisto->Draw();
-  myHisto->Fit("gaus","ME");
+  //myHisto->Fit("gaus","ME");
+  // myHisto->Fit("gaus","ME");
+  TF1 *g1 = new TF1("g1","gaus",265,325);
+  TF1 *g2 = new TF1("g2","gaus",280,305);
 
-  TF1 *fitA = myHisto->GetFunction("gaus");
-  fitA->SetLineColor(1);
+  g1->SetLineColor(1);
+  g2->SetLineColor(3);
 
-  cout << "Chi^2:" << fitA->GetChisquare() << ", number of DoF: " << fitA->GetNDF() << " (Probability: " << fitA->GetProb() << ")." << endl;
+  myHisto->Fit(g1,"R+");
+  myHisto->Fit(g2,"R+");
 
-  TH1F *completeHisto = new TH1F("completeHisto","completeHisto",nBins,1,nBins);
-  for (int j=0;j<nBins;j++) {
-    completeHisto->SetBinContent(j+1,ally[j]);
-  }
-  // come si accorpano gli eventi in bin adiacenti
-  completeHisto->Rebin(10);
-  // ora completeHisto ha nBins/4 classi e ognuna contiene gli eventi di 4 adiacenti
-
-  TCanvas *cX1 = new TCanvas("cx1","cx1",200,10,600,400);
-  cX1->cd();
-
-  completeHisto->GetYaxis()->SetRangeUser(0,completeHisto->GetMaximum()+1.);
-  completeHisto->SetStats(kFALSE);
-  completeHisto->GetXaxis()->SetTitle("bin [CHN]");
-  completeHisto->GetYaxis()->SetTitle("Conteggi");
-
-
-  completeHisto->SetLineColor(2);
-  completeHisto->SetLineWidth(2);
-  completeHisto->Draw();
+  cout << "Chi^2:" << g1->GetChisquare() << ", number of DoF: " << g1->GetNDF() << " (Probability: " << g1->GetProb() << ")." << endl;
+  cout << "Chi^2:" << g2->GetChisquare() << ", number of DoF: " << g2->GetNDF() << " (Probability: " << g2->GetProb() << ")." << endl;
 }
