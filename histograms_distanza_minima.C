@@ -24,7 +24,7 @@ void histograms_distanza_minima() {
   static const int usedBins = 512;
   int y[usedBins];
   int ally[nBins];
-  Double_t par[6]={3000,300,30,3003,300,10};
+  Double_t par[6]={324,290,8,241,295,20};
   ifstream parInput(input.c_str());
   int i = 0;
 
@@ -46,7 +46,7 @@ void histograms_distanza_minima() {
     myHisto->SetBinContent(j+1,y[j]);
   }
   // come si accorpano gli eventi in bin adiacenti
-  myHisto->Rebin(2);
+  myHisto->Rebin(4);
   // ora myHisto ha nBins/4 classi e ognuna contiene gli eventi di 4 adiacenti
 
   TCanvas *cX = new TCanvas("x","x",200,10,600,400);
@@ -65,13 +65,19 @@ void histograms_distanza_minima() {
   // myHisto->Fit("gaus","ME");
   TF1 *g1 = new TF1("g1","gaus",265,325);
   TF1 *g2 = new TF1("g2","gaus",280,305);
+  TF1 *g3 = new TF1("g3","gaus(0)+gaus(3)",255,335);
+  g3-> SetParameters(par);
 
   g1->SetLineColor(1);
   g2->SetLineColor(3);
+  g3->SetLineColor(6);
 
   myHisto->Fit(g1,"R+");
   myHisto->Fit(g2,"R+");
+  myHisto->Fit(g3,"R+");
+
 
   cout << "Chi^2:" << g1->GetChisquare() << ", number of DoF: " << g1->GetNDF() << " (Probability: " << g1->GetProb() << ")." << endl;
   cout << "Chi^2:" << g2->GetChisquare() << ", number of DoF: " << g2->GetNDF() << " (Probability: " << g2->GetProb() << ")." << endl;
+  cout << "Chi^2:" << g3->GetChisquare() << ", number of DoF: " << g3->GetNDF() << " (Probability: " << g3->GetProb() << ")." << endl;
 }
