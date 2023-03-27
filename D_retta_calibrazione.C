@@ -28,19 +28,19 @@ st[j]=0.5;//i moduli di delay avevano una risoluzione di sensibilità di 0.5 ns
 TCanvas *grafico = new TCanvas("grafico","retta di calibrazione",200,10,600,400);
 grafico->SetFillColor(0);
 grafico->cd();
-TGraphErrors *punti = new TGraphErrors(11,t,CH,st,sCH);
+TGraphErrors *punti = new TGraphErrors(11,CH,t,sCH,st);
 punti->SetMarkerSize(0.7);
 punti->SetMarkerStyle(21);
 punti->SetTitle("retta di calibrazione");
-punti->GetXaxis()->SetTitle("ritardo [ns]");
-punti->GetYaxis()->SetTitle("canali");
+punti->GetYaxis()->SetTitle("ritardo [ns]");
+punti->GetXaxis()->SetTitle("canali");
 punti->Draw("AP");
 
 
 
 
 
-TF1 *funz1 = new TF1("funz1","[1]*x+[0]",10,35);
+TF1 *funz1 = new TF1("funz1","[1]*x+[0]",0,400);
 
 	funz1->SetParameter(0,-15);
 	funz1->SetParameter(1,10);
