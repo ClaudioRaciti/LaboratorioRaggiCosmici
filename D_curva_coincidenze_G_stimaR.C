@@ -86,6 +86,44 @@ TF1 *funz1 = new TF1("funz1","[0]/(1+exp((x-[1])/[2]))+2.9361+[3]",14,68);// 2.9
 
   punti->Fit(funz1,"RM+");
   cout << "X^2: " << funz1->GetChisquare() << ", gradi di liberta': " << funz1->GetNDF() << " (p-value: " << funz1->GetProb() << ")." << endl;
+  
+    cout<<"l'ascissa di metà altezza nella parte destra vale: "<<funz1->GetParameter(1)<<endl;
+
+
+
+ // fit della zona sinistra con la formula del passa basso di covarelli
+TF1 *funz3 = new TF1("funz3","[0]/(1+exp(([1]-x)/[2]))+[3]",-80,10);
+
+  funz3->SetParameter(0,16);
+  funz3->SetParameter(1,-28);
+  funz3->SetParameter(2,3);		
+  funz3->SetParameter(3,1);
+  funz3->SetLineColor(1); 
+  
+
+  punti->Fit(funz3,"RM+");
+  cout << "X^2: " << funz3->GetChisquare() << ", gradi di libertà: " << funz3->GetNDF() << " (p-value: " << funz3->GetProb() << ")." << endl;
+  
+  cout<<"l'ascissa di metà altezza nella parte sinistra vale: "<<funz3->GetParameter(1)<<endl;
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //fit della parte sinistra del plateau con una retta orizzontale
@@ -111,6 +149,3 @@ TF1 *funz2 = new TF1("funz2","[0]",-28,13);
 
 
 }
-
-
-
