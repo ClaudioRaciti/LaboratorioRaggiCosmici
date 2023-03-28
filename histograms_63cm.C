@@ -77,4 +77,15 @@ void histograms_63cm() {
   cout << "Chi^2:" << g2->GetChisquare() << ", number of DoF: " << g2->GetNDF() << " (Probability: " << g2->GetProb() << ")." << endl;
 
   cout << myHisto->GetMaximum();
+  float peso1=g2->GetParameter(0);
+  float media1=g2->GetParameter(1);
+  float err_media1=g2->GetParError(1);
+  float peso2=g2->GetParameter(3);
+  float err_media2=g2->GetParError(4);
+  float media2=g2->GetParameter(4);
+
+  float media_pesata=(peso1*media1+peso2*media2)/(peso1+peso2);
+  float err_media_pesata = pow(1/(pow(err_media1,2)+pow(err_media2,2)),0.5);
+
+  cout<<"Media pesata: "<<media_pesata<<"+-"<<err_media_pesata<<endl;
 }

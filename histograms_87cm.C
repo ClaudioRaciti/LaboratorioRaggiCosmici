@@ -76,4 +76,16 @@ void histograms_87cm() {
 
   cout << "Chi^2:" << g1->GetChisquare() << ", number of DoF: " << g1->GetNDF() << " (Probability: " << g1->GetProb() << ")." << endl;
   cout << "Chi^2:" << g3->GetChisquare() << ", number of DoF: " << g3->GetNDF() << " (Probability: " << g3->GetProb() << ")." << endl;
+
+  float peso1=g3->GetParameter(0);
+  float media1=g3->GetParameter(1);
+  float err_media1=g3->GetParError(1);
+  float peso2=g3->GetParameter(3);
+  float err_media2=g3->GetParError(4);
+  float media2=g3->GetParameter(4);
+
+  float media_pesata=(peso1*media1+peso2*media2)/(peso1+peso2);
+  float err_media_pesata = pow(1/(pow(err_media1,2)+pow(err_media2,2)),0.5);
+
+  cout<<"Media pesata: "<<media_pesata<<"+-"<<err_media_pesata<<endl;
 }
