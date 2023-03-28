@@ -43,6 +43,12 @@ for (int j=0;j<n_misure;j++){
 cout<<"ritardo: "<<Rit[j]<<"ns \t rate: "<<r[j]<<"+-"<<sr[j]<<endl;
 }
 
+cout<<endl;
+cout<<endl;
+cout<<endl;
+cout<<endl;
+cout<<endl;
+
 
 
 
@@ -72,10 +78,16 @@ float srf=sqrt(Coincf)/tf;
 
 cout<<"misura del rate di fondo \n"<<"ritardo: "<<Ritf<<"ns \t rate: "<<rf<<"±"<<srf<<endl;
 
+cout<<endl;
+cout<<endl;
+cout<<endl;
+cout<<endl;
+cout<<endl;
 
 
-// fit della zona destra con la formula del passa alto di covarelli
-TF1 *funz1 = new TF1("funz1","[0]/(1+exp((x-[1])/[2]))+2.9361+[3]",14,68);// 2.9361 sarebbe il rate di fondo
+
+cout<<"fit della zona destra con la formula del passa alto di covarelli"<<endl;
+TF1 *funz1 = new TF1("funz1","[0]/(1+exp((x-[1])/[2]))+[3]",14,68);// 2.9361 sarebbe il rate di fondo
 
   funz1->SetParameter(0,18);
   funz1->SetParameter(1,18);
@@ -91,7 +103,14 @@ TF1 *funz1 = new TF1("funz1","[0]/(1+exp((x-[1])/[2]))+2.9361+[3]",14,68);// 2.9
 
 
 
- // fit della zona sinistra con la formula del passa basso di covarelli
+cout<<endl;
+cout<<endl;
+cout<<endl;
+cout<<endl;
+cout<<endl;
+
+
+ cout<<"fit della zona sinistra con la formula del passa basso di covarelli"<<endl;
 TF1 *funz3 = new TF1("funz3","[0]/(1+exp(([1]-x)/[2]))+[3]",-80,10);
 
   funz3->SetParameter(0,16);
@@ -102,7 +121,7 @@ TF1 *funz3 = new TF1("funz3","[0]/(1+exp(([1]-x)/[2]))+[3]",-80,10);
   
 
   punti->Fit(funz3,"RM+");
-  cout << "X^2: " << funz3->GetChisquare() << ", gradi di libertà: " << funz3->GetNDF() << " (p-value: " << funz3->GetProb() << ")." << endl;
+  cout << "X^2: " << funz3->GetChisquare() << ", gradi di libertà: " << funz3->GetNDF() << " (p-value: " << funz3->GetProb() << ")."<<endl;
   
   cout<<"l'ascissa di metà altezza nella parte sinistra vale: "<<funz3->GetParameter(1)<<endl;
   
@@ -110,23 +129,17 @@ TF1 *funz3 = new TF1("funz3","[0]/(1+exp(([1]-x)/[2]))+[3]",-80,10);
 
 
 
+cout<<endl;
+cout<<endl;
+cout<<endl;
+cout<<endl;
+cout<<endl;
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-//fit della parte sinistra del plateau con una retta orizzontale
+cout<<"fit della parte sinistra del plateau con una retta orizzontale"<<endl;
 TF1 *funz2 = new TF1("funz2","[0]",-28,13);
 
   funz2->SetParameter(0,16);
@@ -134,18 +147,68 @@ TF1 *funz2 = new TF1("funz2","[0]",-28,13);
   punti->Fit(funz2,"RM+");
   cout << "X^2: " << funz2->GetChisquare() << ", gradi di libertà: " << funz2->GetNDF() << " (p-value: " << funz2->GetProb() << ")." << endl;
 
-  float rate=funz2->GetParameter(0);
-  float err_rate=funz2->GetParError(0);
-  float rate_acc=rf; //0
-  float err_rate_acc=srf;//0
-  float epsi=0.90522;
-  float err_epsi=0.01674;
+
+
+cout<<endl;
+cout<<endl;
+cout<<endl;
+cout<<endl;
+cout<<endl;
+
+
+
+
+  cout<<"stima del flusso di muoni dalla parte sinistra"<<endl;
+  float Rmis=funz3->GetParameter(0);
+  float sRmis=funz3->GetParError(0);
+  float ε=0.90522;
+  float err_ε=0.01674;
   float etaG=0.419;
   float err_etaG=0.024;
-  float rate_def=(((rate-rate_acc)/(epsi*etaG)))/0.2;
-  float err_rate_def=pow(pow((1/epsi*etaG)*err_rate,2) + pow((1/epsi*etaG)*err_rate_acc,2) + pow(((rate-rate_acc)/epsi*epsi*etaG)*err_epsi,2) + pow(((rate-rate_acc)/epsi*etaG*etaG)*err_etaG,2),0.5);
-  float err_rate_def_sovrastm=(1/epsi*etaG)*err_rate + (1/epsi*etaG)*err_rate_acc + ((rate-rate_acc)/epsi*epsi*etaG)*err_epsi + ((rate-rate_acc)/epsi*etaG*etaG)*err_etaG;
-  cout << endl <<"il rate al livello del mare per unita' di lunghezza vale: " << rate_def << " +- " << err_rate_def_sovrastm << endl << "guarda lascia perdere, vedi se almeno con test Z e' compatibile: " << (180-rate_def)/err_rate_def_sovrastm << endl;
+  float S=0.2;
+  float rate_def=(((Rmis)/(ε*etaG)))/S; //sono 0.2 m^2 ovvero l'area della coppia degli scintillatori
+
+  
+  float δRmis=(1/(ε*etaG*S))*sRmis;
+  float δε=((Rmis)/(etaG*S*ε*ε))*err_ε;
+  float δetaG=((Rmis)/(ε*S*etaG*etaG))*err_etaG;
+  
+  
+   float err_rate_def=sqrt(pow(δRmis,2)+pow(δε,2)+pow(δetaG,2));
+
+  cout << endl <<"il rate al livello del mare per unita' di superficie vale: (" << rate_def << " +- " << err_rate_def<<") conteggi/(m^2*s)"<< endl << "guarda lascia perdere, vedi se almeno con test Z e' compatibile: " << (180-rate_def)/err_rate_def<< endl;
+  
+  
+  cout<<endl;
+  cout<<endl;
+  cout<<endl;
+  cout<<endl;
+  cout<<endl;
+  cout<<endl;
+  
+  
+  
+  cout<<"stima del flusso di muoni dalla parte destra"<<endl;
+  float Rmis_d=funz1->GetParameter(0);
+  float sRmis_d=funz1->GetParError(0);
+
+  
+  float rate_def_d=(((Rmis_d)/(ε*etaG)))/S; 
+
+  
+  float δRmis_d=(1/(ε*etaG*S))*sRmis_d;
+  float δε_d=((Rmis_d)/(etaG*S*ε*ε))*err_ε;
+  float δetaG_d=((Rmis_d)/(ε*S*etaG*etaG))*err_etaG;
+  
+  
+   float err_rate_def_d=sqrt(pow(δRmis_d,2)+pow(δε_d,2)+pow(δetaG_d,2));
+
+  cout << endl <<"il rate al livello del mare per unita' di superficie vale: (" << rate_def_d << " +- " << err_rate_def_d<<") conteggi/(m^2*s)"<< endl << "guarda lascia perdere, vedi se almeno con test Z e' compatibile: " << (180-rate_def_d)/err_rate_def_d<< endl;
+  
+  
+  
+  
+  
 
 
 }
