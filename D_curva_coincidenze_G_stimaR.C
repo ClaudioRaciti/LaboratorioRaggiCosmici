@@ -5,6 +5,7 @@
 #include <TF1.h>
 #include <iomanip>
 #include <math.h>
+#include "RooStats/RooStatsUtils.h" //contiene la funzione per calcolare il p-value nel test z
 
 using namespace std;
 
@@ -175,9 +176,12 @@ cout<<endl;
   
   
    float err_rate_def=sqrt(pow(δRmis,2)+pow(δε,2)+pow(δetaG,2));
+   
 
-  cout << endl <<"il rate al livello del mare per unita' di superficie vale: (" << rate_def << " +- " << err_rate_def<<") conteggi/(m^2*s)"<< endl << "guarda lascia perdere, vedi se almeno con test Z e' compatibile: " << (180-rate_def)/err_rate_def<< endl;
-  
+
+  cout << endl <<"il rate al livello del mare per unita' di superficie vale: (" << rate_def << " +- " << err_rate_def<<") conteggi/(m^2*s)"<< endl;
+  float Z=(180-rate_def)/err_rate_def;
+  cout << "test Z con il dato teorico di 180 conteggi/(m^2*s): Z=" <<Z<<"\til p-value vale: "<<2*RooStats::SignificanceToPValue(abs(Z))<<endl;;//questa funzione dà solo la coda destra, quindi va ancora motilicata per 2, poi siccome Z è negativo bisogna prendere il valore assoluto, proprio perchè la funzione calcola la coda destra
   
   cout<<endl;
   cout<<endl;
@@ -203,7 +207,18 @@ cout<<endl;
   
    float err_rate_def_d=sqrt(pow(δRmis_d,2)+pow(δε_d,2)+pow(δetaG_d,2));
 
-  cout << endl <<"il rate al livello del mare per unita' di superficie vale: (" << rate_def_d << " +- " << err_rate_def_d<<") conteggi/(m^2*s)"<< endl << "guarda lascia perdere, vedi se almeno con test Z e' compatibile: " << (180-rate_def_d)/err_rate_def_d<< endl;
+  cout << endl <<"il rate al livello del mare per unita' di superficie vale: (" << rate_def_d << " +- " << err_rate_def_d<<") conteggi/(m^2*s)"<< endl; 
+  float Z_d=(180-rate_def_d)/err_rate_def_d;
+  cout << "test Z con il dato teorico di 180 conteggi/(m^2*s): Z=" <<Z_d<<"\til p-value vale: "<<2*RooStats::SignificanceToPValue(abs(Z_d))<<endl;
+  
+  cout<<endl;
+  cout<<endl;
+  cout<<endl;
+  cout<<endl;
+  cout<<endl;
+  cout<<endl;  
+  
+  
   
   
   
